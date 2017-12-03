@@ -1,7 +1,5 @@
 # Almond
 
-## Quick Start
-
 Install [IncludeOS](https://github.com/hioa-cs/IncludeOS#install-libraries). Then:
 
 ```sh
