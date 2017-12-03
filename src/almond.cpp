@@ -7,7 +7,8 @@
 #include "duk_config.h"
 #include "duktape.h"
 
-fs::Disk& memdisk() {
+fs::Disk& memdisk()
+{
     fs::Disk& disk = fs::memdisk();
 
     if (not disk.fs_ready()) {
@@ -26,14 +27,6 @@ void Service::start(const std::string& args)
     fs::mount("/memdisk", disk, "disk");
 
     duk_context *ctx = duk_create_heap_default();
-
-    /*
-    std::ifstream is("/memdisk/test.js");
-    std::string line;
-    while (std::getline(is, line)) {
-        duk_eval_string(ctx, line.c_str());
-    }
-    */
 
     std::ifstream t("/memdisk/test.js");
     std::stringstream buffer;
