@@ -1,3 +1,4 @@
 build/*
 almond
 almond.img
+.DS_Store
