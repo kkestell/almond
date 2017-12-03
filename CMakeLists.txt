@@ -13,12 +13,17 @@ set(SERVICE_NAME "Almond")
 set(BINARY "almond")
 
 set(SOURCES
-  src/almond.cpp
+  src/main.cpp
   src/duktape/duktape.c
+  src/context.cpp
+  src/volume.cpp
+  src/environment.cpp
 )
 
 set(LOCAL_INCLUDES
+  src
   src/duktape
+  src/dukglue
 )
 
 set(DRIVERS
