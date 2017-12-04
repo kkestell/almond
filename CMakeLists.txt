@@ -14,22 +14,30 @@ set(BINARY "almond")
 
 set(SOURCES
   src/main.cpp
-  src/duktape/duktape.c
   src/context.cpp
-  src/volume.cpp
+  src/duktape/duktape.c
   src/environment.cpp
+  src/volume.cpp
+  src/http_server.cpp
 )
 
 set(LOCAL_INCLUDES
   src
   src/duktape
-  src/dukglue
 )
 
-set(DRIVERS
-)
+if ("$ENV{PLATFORM}" STREQUAL "x86_solo5")
+  set(DRIVERS
+    solo5net
+  )
+else()
+  set(DRIVERS
+    virtionet
+  )
+endif()
 
 set(PLUGINS
+  autoconf
 )
 
 set(LIBRARIES

@@ -1,7 +1,7 @@
 #include <service>
-#include "environment.hpp"
+#include "http_server.hpp"
 
 void Service::start(const std::string& args)
 {
-    const auto& env = environment();
+    const auto& server = new http_server();
 }

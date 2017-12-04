@@ -1,7 +1,7 @@
+#include <functional>
 #include <string>
 #include "duk_config.h"
 #include "duktape.h"
-#include "dukglue.h"
 
 class context
 {
@@ -11,4 +11,6 @@ public:
     context();
     ~context();
     void include(const std::string& buf);
+    std::string request();
+    void expose(const std::string& name, duk_c_function func, int args);
 };

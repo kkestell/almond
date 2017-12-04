@@ -4,5 +4,5 @@ Install [IncludeOS](https://github.com/hioa-cs/IncludeOS#install-libraries). The
 
 ```sh
 $ ./cmake_build.sh
-$ boot almond
+$ boot --create-bridge almond
 ```

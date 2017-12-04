@@ -15,7 +15,7 @@ fs::Dirent make_disk()
 
 volume::volume() : disk(make_disk())
 {
-    fs::mount("/memdisk", this->disk, "disk");
+    fs::mount("/disk", this->disk, "disk");
 }
 
 volume::~volume()
