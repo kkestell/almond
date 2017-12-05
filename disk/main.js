@@ -1,3 +1,7 @@
-function request() {
-  return '<p>Hello Almond!</p>'
-}
+get(/^\/$/i, function() {
+  return 'Hello Almond!';
+});
+
+get(/^\/almonds$/i, function() {
+  return '{ "almonds": [] }';
+});

@@ -1,3 +1,5 @@
+#include <net/http/request.hpp>
+#include <net/http/response.hpp>
 #include <string>
 #include "context.hpp"
 #include "volume.hpp"
@@ -9,9 +11,9 @@ class environment
 private:
     context context;
     volume volume;
-    static duk_ret_t route(duk_context *ctx);
+    static duk_ret_t puts(duk_context *ctx);
 public:
     environment();
     ~environment();
-    std::string request();
+    std::string request(http::Request_ptr req);
 };

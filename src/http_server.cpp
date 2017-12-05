@@ -8,7 +8,7 @@ http_server::http_server() : env()
     this->server->on_request([&] (auto req, auto rw) {
         rw->header().set_field(http::header::Server, "Almond/0.1");
         rw->header().set_field(http::header::Content_Type, "text/html; charset=UTF-8");
-        rw->write(this->env.request());
+        rw->write(this->env.request(std::move(req)));
     });
 
     this->server->listen(80);

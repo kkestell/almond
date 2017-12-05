@@ -1,4 +1,5 @@
-#include <functional>
+#include <net/http/request.hpp>
+#include <net/http/response.hpp>
 #include <string>
 #include "duk_config.h"
 #include "duktape.h"
@@ -11,6 +12,6 @@ public:
     context();
     ~context();
     void include(const std::string& buf);
-    std::string request();
+    std::string request(http::Request_ptr);
     void expose(const std::string& name, duk_c_function func, int args);
 };

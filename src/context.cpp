@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <functional>
 #include <string>
 #include "context.hpp"
 
@@ -24,12 +23,27 @@ void context::include(const std::string& buf)
     duk_eval_string(this->ctx, buf.c_str());
 }
 
-std::string context::request()
+std::string context::request(http::Request_ptr req)
 {
+    const auto& path = req->uri().to_string();
+    const auto& method = http::method::str(req->method()).to_string();
+
     duk_get_global_string(this->ctx, "request");
-    duk_call(this->ctx, 0);
+
+    duk_idx_t obj_idx;
+    obj_idx = duk_push_object(this->ctx);
+
+    duk_push_string(this->ctx, method.c_str());
+    duk_put_prop_string(this->ctx, obj_idx, "method");
+
+    duk_push_string(this->ctx, path.c_str());
+    duk_put_prop_string(this->ctx, obj_idx, "path");
+
+    duk_call(this->ctx, 1);
+
     std::string res = std::string(duk_require_string(this->ctx, -1));
     duk_pop(this->ctx);
+
     return res;
 }
 
