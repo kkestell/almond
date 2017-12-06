@@ -1,0 +1,6 @@
+FROM includeos/includeos-common:v0.11.0-rc.2.01
+
+VOLUME /service/build
+WORKDIR /service/build
+
+ENTRYPOINT ["qemu-system-i386", "-nographic", "-smp", "1", "-m", "128", "-net", "nic,model=virtio", "-net", "user", "-kernel"]

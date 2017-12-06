@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 2.8.9)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 if (NOT DEFINED ENV{INCLUDEOS_PREFIX})
   set(ENV{INCLUDEOS_PREFIX} /usr/local)
 endif()
@@ -17,8 +25,10 @@ set(SOURCES
   src/context.cpp
   src/duktape/duktape.c
   src/environment.cpp
-  src/volume.cpp
   src/http_server.cpp
+  src/response.cpp
+  src/request.cpp
+  src/volume.cpp
 )
 
 set(LOCAL_INCLUDES

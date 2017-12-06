@@ -13,19 +13,22 @@ fs::Dirent make_disk()
     return disk.fs().stat("/");
 }
 
-volume::volume() : disk(make_disk())
+namespace almond
 {
-    fs::mount("/disk", this->disk, "disk");
-}
+    volume::volume() : disk(make_disk())
+    {
+        fs::mount("/disk", disk, "disk");
+    }
 
-volume::~volume()
-{
-}
+    volume::~volume()
+    {
+    }
 
-std::string volume::load(std::string filename)
-{
-    std::ifstream fp(filename);
-    std::stringstream buf;
-    buf << fp.rdbuf();
-    return buf.str();
+    std::string volume::load(std::string filename)
+    {
+        const std::ifstream fp(filename);
+        std::stringstream buf;
+        buf << fp.rdbuf();
+        return buf.str();
+    }
 }

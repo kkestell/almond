@@ -1,19 +1,27 @@
-#include <net/http/request.hpp>
-#include <net/http/response.hpp>
+#ifndef ALMOND_ENVIRONMENT_HPP
+#define ALMOND_ENVIRONMENT_HPP
+
+#include <memory>
 #include <string>
 #include "context.hpp"
-#include "volume.hpp"
-#include "duk_config.h"
 #include "duktape.h"
+#include "response.hpp"
+#include "request.hpp"
+#include "volume.hpp"
 
-class environment
+namespace almond
 {
-private:
-    context context;
-    volume volume;
-    static duk_ret_t puts(duk_context *ctx);
-public:
-    environment();
-    ~environment();
-    std::string request(http::Request_ptr req);
-};
+    class environment
+    {
+    private:
+        context context;
+        volume volume;
+        static duk_ret_t puts(duk_context *ctx);
+    public:
+        environment();
+        ~environment();
+        std::unique_ptr<response> request(std::unique_ptr<almond::request> req);
+    };
+}
+
+#endif

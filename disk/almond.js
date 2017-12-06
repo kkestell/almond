@@ -12,12 +12,14 @@ function get(path, func) {
   route('GET', path, func);
 }
 
-function request(req) {
-  puts(req.method + ' ' + req.path);
+function request(req, res) {
+  // puts(req.method + ' ' + req.path);
   for(var i = 0; i < routes.length; i++) {
     const route = routes[i];
-    if(req.method === route.method && req.path.match(route.path))
-      return route.func();
+    if(req.method === route.method && req.path.match(route.path)) {
+      route.func(req, res);
+      return res;
+    }
   };
   return 'Not Found';
 }

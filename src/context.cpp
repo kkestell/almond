@@ -1,5 +1,3 @@
-#include <cstdio>
-#include <string>
 #include "context.hpp"
 
 static void fatal(void *udata, const char *msg) {
@@ -8,48 +6,83 @@ static void fatal(void *udata, const char *msg) {
     abort();
 }
 
-context::context()
+namespace almond
 {
-    this->ctx = duk_create_heap(NULL, NULL, NULL, NULL, fatal);
-}
+    context::context()
+    {
+        ctx = duk_create_heap(NULL, NULL, NULL, NULL, fatal);
+    }
 
-context::~context()
-{
-    duk_destroy_heap(this->ctx);
-}
+    context::~context()
+    {
+        duk_destroy_heap(ctx);
+    }
 
-void context::include(const std::string& buf)
-{
-    duk_eval_string(this->ctx, buf.c_str());
-}
+    void context::include(const std::string& buf)
+    {
+        duk_eval_string(ctx, buf.c_str());
+    }
 
-std::string context::request(http::Request_ptr req)
-{
-    const auto& path = req->uri().to_string();
-    const auto& method = http::method::str(req->method()).to_string();
+    std::unique_ptr<response> context::request(std::unique_ptr<almond::request> req)
+    {
+        // [request]
+        duk_get_global_string(ctx, "request");
 
-    duk_get_global_string(this->ctx, "request");
+        // [request, {}]
+        const auto req_obj_idx = duk_push_object(ctx);
 
-    duk_idx_t obj_idx;
-    obj_idx = duk_push_object(this->ctx);
+        // [request, {}, 'get']
+        duk_push_string(ctx, req->method.c_str());
 
-    duk_push_string(this->ctx, method.c_str());
-    duk_put_prop_string(this->ctx, obj_idx, "method");
+        // [request, {method: 'get'}]
+        duk_put_prop_string(ctx, req_obj_idx, "method");
 
-    duk_push_string(this->ctx, path.c_str());
-    duk_put_prop_string(this->ctx, obj_idx, "path");
+        // [request, {method: 'get'}, "/"]
+        duk_push_string(ctx, req->path.c_str());
 
-    duk_call(this->ctx, 1);
+        // [request, {method: 'get', path: '/'}]
+        duk_put_prop_string(ctx, req_obj_idx, "path");
 
-    std::string res = std::string(duk_require_string(this->ctx, -1));
-    duk_pop(this->ctx);
+        // [request, {method: 'get', path: '/'}, {}]
+        const auto res_obj_idx = duk_push_object(ctx);
 
-    return res;
-}
+        // [request, {method: 'get', path: '/'}, {}, '']
+        duk_push_string(ctx, "");
 
-void context::expose(const std::string& name, duk_c_function func, int args)
-{
-    duk_push_global_object(this->ctx);
-    duk_push_c_function(this->ctx, func, args);
-    duk_put_prop_string(ctx, -2, name.c_str());
+        // [request, {method: 'get', path: '/'}, {body: ''}]
+        duk_put_prop_string(ctx, res_obj_idx, "body");
+
+        // [request({method: 'get', path: '/'}, {body: ''})]
+        duk_call(ctx, 2);
+
+        // [{body: 'foo', contentType: 'bar'}, 'foo']
+        duk_get_prop_string(ctx, -1, "body");
+        const auto& body = std::string(duk_to_string(ctx, -1));
+
+        // [{body: 'foo', content_type: 'bar'}]
+        duk_pop(ctx);
+
+        // [{body: 'foo', contentType: 'bar'}, 'bar']
+        duk_get_prop_string(ctx, -1, "contentType");
+        const auto& content_type = std::string(duk_to_string(ctx, -1));
+
+        // [{body: 'foo', contentType: 'bar'}]
+        duk_pop(ctx);
+
+        // []
+        duk_pop(ctx);
+
+        auto res = std::make_unique<response>();
+        res->body = body;
+        res->content_type = content_type;
+
+        return res;
+    }
+
+    void context::expose(const std::string& name, duk_c_function func, int args)
+    {
+        duk_push_global_object(ctx);
+        duk_push_c_function(ctx, func, args);
+        duk_put_prop_string(ctx, -2, name.c_str());
+    }
 }
