@@ -4,7 +4,6 @@
 #include <memory>
 #include <string>
 #include "context.hpp"
-#include "duktape.h"
 #include "response.hpp"
 #include "request.hpp"
 #include "volume.hpp"
@@ -16,7 +15,6 @@ namespace almond
     private:
         context context;
         volume volume;
-        static duk_ret_t puts(duk_context *ctx);
     public:
         environment();
         ~environment();

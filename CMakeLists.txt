@@ -23,17 +23,24 @@ set(BINARY "almond")
 set(SOURCES
   src/main.cpp
   src/context.cpp
-  src/duktape/duktape.c
   src/environment.cpp
   src/http_server.cpp
   src/response.cpp
   src/request.cpp
   src/volume.cpp
+  src/stubs.c
+  src/wren/wren_compiler.c
+  src/wren/wren_core.c
+  src/wren/wren_debug.c
+  src/wren/wren_primitive.c
+  src/wren/wren_utils.c
+  src/wren/wren_value.c
+  src/wren/wren_vm.c
 )
 
 set(LOCAL_INCLUDES
   src
-  src/duktape
+  src/wren
 )
 
 if ("$ENV{PLATFORM}" STREQUAL "x86_solo5")
