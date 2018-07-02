@@ -2,11 +2,11 @@
 
 namespace almond
 {
-    response::response()
+    Response::Response()
     {
     }
 
-    response::~response()
+    Response::~Response()
     {
     }
 }

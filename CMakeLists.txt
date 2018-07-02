@@ -27,6 +27,7 @@ set(SOURCES
   src/http_server.cpp
   src/response.cpp
   src/request.cpp
+  src/router.cpp
   src/volume.cpp
   src/stubs.c
   src/wren/wren_compiler.c

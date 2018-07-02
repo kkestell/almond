@@ -10,15 +10,15 @@
 
 namespace almond
 {
-    class context
+    class Context
     {
     private:
-        WrenVM* vm;
+
     public:
-        context();
-        ~context();
-        void include(const std::string& buf);
-        std::unique_ptr<response> request(std::unique_ptr<request> req);
+        Context();
+        ~Context();
+
+        std::unique_ptr<Response> request(std::unique_ptr<Request> req);
     };
 }
 

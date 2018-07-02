@@ -6,34 +6,66 @@ void write(WrenVM* vm, const char* text)
     printf(text);
 }
 
+void error(
+  WrenVM* vm,
+  WrenErrorType type,
+  const char* module,
+  int line,
+  const char* message)
+{
+    printf("%d %s %d %s %s", type, module, line, message);
+}
+
+void route(WrenVM* vm)
+{
+  const char* method = wrenGetSlotString(vm, 1);
+  const char* path = wrenGetSlotString(vm, 2);
+  const char* action = wrenGetSlotString(vm, 3);
+
+  printf("%s %s => %s\n", method, path, action);
+}
+
+WrenForeignMethodFn bindForeignMethod(
+  WrenVM* vm,
+  const char* module,
+  const char* className,
+  bool isStatic,
+  const char* signature)
+{
+  if(strcmp("route(_,_,_)", signature) == 0) {
+    return route;
+  }
+}
+
 namespace almond
 {
-    context::context()
+    Context::Context()
     {
         WrenConfiguration config;
         wrenInitConfiguration(&config);
 
         config.writeFn = write;
+        config.errorFn = error;
+        config.bindForeignMethodFn = bindForeignMethod;
 
         vm = wrenNewVM(&config);
     }
 
-    context::~context()
+    Context::~Context()
     {
         wrenFreeVM(vm);
     }
 
-    void context::include(const std::string& buf)
+    void Context::include(const std::string& buf)
     {
         WrenInterpretResult result = wrenInterpret(vm, buf.c_str());
     }
 
-    std::unique_ptr<response> context::request(std::unique_ptr<almond::request> req)
+    std::unique_ptr<Response> Context::request(std::unique_ptr<Request> req)
     {
-        auto res = std::make_unique<response>();
+        auto res = std::make_unique<Response>();
         res->body = "Hello Almond!";
-        res->content_type = "text/html";
-
+        res->contentType = "text/html";
         return res;
     }
 }

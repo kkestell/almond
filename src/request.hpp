@@ -6,11 +6,11 @@
 
 namespace almond
 {
-    class request
+    class Request
     {
     public:
-        request(http::Request_ptr);
-        ~request();
+        Request(http::Request_ptr);
+        ~Request();
         std::string path;
         std::string method;
     };

@@ -3,5 +3,5 @@
 
 void Service::start(const std::string& args)
 {
-    const auto& server = new almond::http_server();
+    const auto& server = new almond::HttpServer();
 }

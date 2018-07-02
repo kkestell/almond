@@ -1,0 +1,4 @@
+class Create {
+  static call() {
+  }
+}

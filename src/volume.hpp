@@ -9,13 +9,13 @@
 
 namespace almond
 {
-    class volume
+    class Volume
     {
     private:
         fs::Dirent disk;
     public:
-        volume();
-        ~volume();
+        Volume();
+        ~Volume();
         std::string load(std::string filename);
     };
 }

@@ -10,15 +10,16 @@
 
 namespace almond
 {
-    class environment
+    class Environment
     {
     private:
-        context context;
-        volume volume;
+        WrenVM* vm;
+        Context context;
+        Volume volume;
     public:
-        environment();
-        ~environment();
-        std::unique_ptr<response> request(std::unique_ptr<almond::request> req);
+        Environment();
+        ~Environment();
+        std::unique_ptr<Response> request(std::unique_ptr<Request> req);
     };
 }
 

@@ -2,7 +2,7 @@
 
 namespace almond
 {
-    http_server::http_server() : env()
+    HttpServer::HttpServer() : environment(), router()
     {
         auto& inet = net::Inet4::stack<0>();
         server = std::make_unique<http::Server>(inet.tcp());
@@ -10,17 +10,25 @@ namespace almond
         server->on_request([&](auto req, auto res) {
             res->header().set_field(http::header::Server, "Almond/0.1");
 
-            auto request = std::make_unique<almond::request>(std::move(req));
-            auto response = env.request(std::move(request));
+            //auto request = std::make_unique<Request>(std::move(req));
+            //auto response = environment.request(std::move(request));
 
-            res->header().set_field(http::header::Content_Type, response->content_type);
-            res->write(response->body);
+            //res->header().set_field(http::header::Content_Type, response->contentType);
+            //res->write(response->body);
+
+            res->header().set_field(http::header::Content_Type, "text/html");
+            res->write(
+              router.match(
+                http::method::str(req->method()).to_string(),
+                req->uri().to_string()
+              )
+            );
         });
 
         server->listen(80);
     }
 
-    http_server::~http_server()
+    HttpServer::~HttpServer()
     {
     }
 }

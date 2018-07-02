@@ -7,17 +7,19 @@
 #include <net/http/response.hpp>
 #include <net/http/server.hpp>
 #include "environment.hpp"
+#include "router.hpp"
 
 namespace almond
 {
-    class http_server
+    class HttpServer
     {
     private:
         std::unique_ptr<http::Server> server;
-        environment env;
+        Environment environment;
+        Router router;
     public:
-        http_server();
-        ~http_server();
+        HttpServer();
+        ~HttpServer();
     };
 }
 

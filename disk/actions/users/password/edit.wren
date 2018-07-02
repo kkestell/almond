@@ -1,0 +1,4 @@
+class Edit {
+  static call() {
+  }
+}

@@ -1,6 +1,6 @@
 #include "volume.hpp"
 
-fs::Dirent make_disk()
+fs::Dirent makeDisk()
 {
     fs::Disk& disk = fs::memdisk();
 
@@ -15,16 +15,16 @@ fs::Dirent make_disk()
 
 namespace almond
 {
-    volume::volume() : disk(make_disk())
+    Volume::Volume() : disk(makeDisk())
     {
         fs::mount("/disk", disk, "disk");
     }
 
-    volume::~volume()
+    Volume::~Volume()
     {
     }
 
-    std::string volume::load(std::string filename)
+    std::string Volume::load(std::string filename)
     {
         const std::ifstream fp(filename);
         std::stringstream buf;

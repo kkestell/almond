@@ -3,16 +3,16 @@
 
 namespace almond
 {
-    environment::environment()
+    Environment::Environment()
     {
         context.include(volume.load("/disk/main.wren"));
     }
 
-    environment::~environment()
+    Environment::~Environment()
     {
     }
 
-    std::unique_ptr<response> environment::request(std::unique_ptr<almond::request> req)
+    std::unique_ptr<Response> Environment::request(std::unique_ptr<Request> req)
     {
         return context.request(std::move(req));
     }

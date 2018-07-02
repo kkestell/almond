@@ -5,13 +5,13 @@
 
 namespace almond
 {
-    class response
+    class Response
     {
     public:
-        response();
-        ~response();
+        Response();
+        ~Response();
         std::string body;
-        std::string content_type;
+        std::string contentType;
     };
 }
 
